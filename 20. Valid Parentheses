@@ -1,0 +1,43 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
+// Function to check if a given character is an opening bracket
+bool isOpeningBracket(char c) {
+    return c == '(' || c == '{' || c == '[';
+}
+
+// Function to check if a given character is a closing bracket
+bool isClosingBracket(char c) {
+    return c == ')' || c == '}' || c == ']';
+}
+
+// Function to check if two characters are of the same type of bracket
+bool isSameType(char open, char close) {
+    return (open == '(' && close == ')') || 
+           (open == '{' && close == '}') || 
+           (open == '[' && close == ']');
+}
+
+// Function to check if a string of brackets is valid
+bool isValid(char* s) {
+    int len = strlen(s);
+    char stack[len];
+    int top = -1; // initialize stack top index as -1
+    
+    for (int i = 0; i < len; i++) {
+        if (isOpeningBracket(s[i])) { // if current character is opening bracket
+            stack[++top] = s[i]; // push onto stack
+        }
+        else if (isClosingBracket(s[i])) { // if current character is closing bracket
+            if (top == -1) return false; // stack is empty, no matching opening bracket
+            if (!isSameType(stack[top], s[i])) return false; // not the same type of bracket
+            top--; // pop matching opening bracket from stack
+        }
+    }
+    
+    return top == -1; // stack should be empty if all brackets have matching pairs
+}
+
+
